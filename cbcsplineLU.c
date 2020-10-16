@@ -22,11 +22,11 @@ void cubicspline(float x[100],float y[100], int k,float xi)
 	float h[n],b[n],v[n+1],u[n-2],k[n];;
 	int i,j;
 	for(i = 0; i < n; i++)
-		h[i] = x_ds[i] - x_ds[i+1];
+		h[i] = x[i] - x[i+1];
 	
 	
 	for(i = 0; i < n; i++)
-		b[i] = (y_ds[i] - y_ds[i+1])/h[i];
+		b[i] = (y[i] - y[i+1])/h[i];
 
 	for(i = 1; i < n-1; i++)
 		v[i] = 2*(h[i-1]+h[i]);
@@ -118,18 +118,14 @@ void cubicspline(float x[100],float y[100], int k,float xi)
 
 	for(int i=0;i<=n-3;i++)
 		k[i+1]=Q[i];
+	double y_interpolated=0.0;
 
-
-	for(j=0;j<size;j++)
-    {
 		for(i =0; i < n;i++)
 		{	
-		if((x_ds[i] < x_true[j])&&(x_true[j] < x_ds[i+1]))
-		{
-			y_int[j] = (k[i]/6)*(((pow((x_true[j]-x_ds[i+1]),3))/(h[i])) - ((x_true[j]-x_ds[i+1])*h[i])) - (k[i+1]/6)*(((pow((x_true[j]-x_ds[i]),3))/(h[i])) - ((x_true[j]-x_ds[i])*h[i])) + (((y_ds[i]*(x_true[j]-x_ds[i+1]))-y_ds[i+1]*(x_true[j]-x_ds[i]))/h[i]);
+			if((x[i] < xi)&&(xi < x[i+1]))
+			{y_interpolated = (k[i]/6)*(((pow((xi-x[i+1]),3))/(h[i])) - ((xi-x[i+1])*h[i])) - (k[i+1]/6)*(((pow((xi-x[i]),3))/(h[i])) - ((xi-x[i])*h[i])) + (((y[i]*(xi-x[i+1]))-y[i+1]*(xi-x[i]))/h[i]);}
 		}
-		}
-	}
+	printf("value of the function at x = %.2f is y =  %.4f \n",xi,y_interpolated);
 
 	return 0.0;
 }
